@@ -51,7 +51,10 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(foo.path, '/tmp/guachi/guachi.db')
         self.assertEqual(foo.get_ini_options(), {})
         self.assertEqual(foo.get_default_options(), {})
-        self.assertEqual(foo.get_dict_config(), self.mapped_defaults)
+        # web_port는 int 타입으로 저장됨
+        expected = dict(self.mapped_defaults)
+        expected['web_port'] = 8080
+        self.assertEqual(foo.get_dict_config(), expected)
         self.assertEqual(foo.stored_config(), {})
         self.assertTrue(foo.integrity_check())
 
@@ -68,9 +71,9 @@ class TestIntegration(unittest.TestCase):
         self.assertEqual(foo.get_ini_options(), {})
         self.assertEqual(foo.get_default_options(), {})
         self.assertEqual(foo.get_dict_config(), 
-                {u'web_port': u'8080', 
-                 u'web_host': u'localhost', 
-                 u'db_host': u'example.com', 
-                 u'db_port': 0})
+            {u'web_port': 8080, 
+             u'web_host': u'localhost', 
+             u'db_host': u'example.com', 
+             u'db_port': 0})
         self.assertEqual(foo.stored_config(), {})
         self.assertTrue(foo.integrity_check())

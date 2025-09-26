@@ -53,9 +53,10 @@ class TestDbdict(unittest.TestCase):
         foo._close()
         self.assertRaises(sqlite3.ProgrammingError, foo.__setitem__, 'bar', {'a':'b'})
 
-    def test_setitem_typeerror(self):
+    def test_setitem_dict(self):
         foo = database.dbdict('/tmp/test_guachi')
-        self.assertRaises(sqlite3.InterfaceError, foo.__setitem__, 'bar', {'a':'b'})
+        foo.__setitem__('bar', {'a': 'b'})
+        self.assertEqual(foo['bar'], {'a': 'b'})
 
     def test_delitem_keyerror(self):
         foo = database.dbdict('/tmp/test_guachi')
